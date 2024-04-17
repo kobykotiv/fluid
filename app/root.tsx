@@ -42,12 +42,7 @@ import {seoPayload} from './lib/seo.server';
 import {ROOT_QUERY} from './qroq/queries';
 import tailwindCss from './styles/tailwind.css';
 
-// GTM Analytics
-import TagManager from 'react-gtm-module'
-const tagManagerArgs = {
-  gtmId: 'G-DHR8WJKS90'
-}
-TagManager.initialize(tagManagerArgs)
+
 
 
 // This is important to avoid re-fetching root queries on sub-navigations
