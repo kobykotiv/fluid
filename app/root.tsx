@@ -43,7 +43,7 @@ import {ROOT_QUERY} from './qroq/queries';
 import tailwindCss from './styles/tailwind.css';
 
 // GTM Analytics
-import TagManager from 'react-gtm-module'
+import TagManager from 'react-gtm-module';
 const tagManagerArgs = {
   gtmId: 'G-DHR8WJKS90'
 }
