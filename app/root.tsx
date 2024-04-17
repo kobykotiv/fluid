@@ -45,7 +45,7 @@ import tailwindCss from './styles/tailwind.css';
 // GTM Analytics
 import TagManager from 'react-gtm-module'
 const tagManagerArgs = {
-  gtmId: 'G-YJKX8REBPG'
+  gtmId: 'G-DHR8WJKS90'
 }
 TagManager.initialize(tagManagerArgs)
 
