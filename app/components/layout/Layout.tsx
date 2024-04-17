@@ -11,12 +11,7 @@ import {FramerMotion} from './FramerMotion';
 import {Header} from './Header';
 import {NavigationProgressBar} from './NavigationProgressBar';
 
-// GTM Analytics
-import TagManager from 'react-gtm-module'
-const tagManagerArgs = {
-  gtmId: 'G-DHR8WJKS90'
-}
-TagManager.initialize(tagManagerArgs)
+
 
 const VisualEditing = lazy(() =>
   import('~/components/sanity/VisualEditing').then((mod) => ({
