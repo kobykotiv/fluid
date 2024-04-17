@@ -42,6 +42,14 @@ import {seoPayload} from './lib/seo.server';
 import {ROOT_QUERY} from './qroq/queries';
 import tailwindCss from './styles/tailwind.css';
 
+// GTM Analytics
+import TagManager from 'react-gtm-module'
+const tagManagerArgs = {
+  gtmId: 'G-YJKX8REBPG'
+}
+TagManager.initialize(tagManagerArgs)
+
+
 // This is important to avoid re-fetching root queries on sub-navigations
 export const shouldRevalidate: ShouldRevalidateFunction = ({
   currentUrl,
@@ -201,16 +209,7 @@ export default function App() {
         <meta charSet="utf-8" />
         <meta content="width=device-width,initial-scale=1" name="viewport" />
         
-        {/* <!-- Google tag (gtag.js) --> */}
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DHR8WJKS90">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'G-DHR8WJKS90');
-</script>
         
         <Meta />
         <Seo />
