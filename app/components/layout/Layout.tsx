@@ -11,6 +11,8 @@ import {FramerMotion} from './FramerMotion';
 import {Header} from './Header';
 import {NavigationProgressBar} from './NavigationProgressBar';
 
+
+
 const VisualEditing = lazy(() =>
   import('~/components/sanity/VisualEditing').then((mod) => ({
     default: mod.VisualEditing,
