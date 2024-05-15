@@ -202,9 +202,19 @@ export default function App() {
         <meta content="width=device-width,initial-scale=1" name="viewport" />
         <Meta />
         <Fonts />
+        <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16529153665"></script>
+        <script 
+        dangerouslySetInnerHTML={{__html:`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)}
+          gtag('js', new Date())
+
+          gtag('config', 'AW-16529153665')
+          `}}></script>
         <Links />
         <CssVars />
       </head>
+      
       <body className="flex min-h-screen flex-col overflow-x-hidden bg-background text-foreground">
         <Layout>
           <Outlet />
