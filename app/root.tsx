@@ -200,6 +200,7 @@ export default function App() {
       <head>
         <meta charSet="utf-8" />
         <meta content="width=device-width,initial-scale=1" name="viewport" />
+        <meta name="google-site-verification" content="SNOV8jQP2lZ_iKoWmo6ZjuphgPLWPWdIRFwd2X8HfrY" />
         <Meta />
         <Fonts />
         <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16529153665"></script>
