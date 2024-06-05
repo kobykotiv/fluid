@@ -9,18 +9,9 @@ import type {
   ShopPolicy,
 } from '@shopify/hydrogen/storefront-api-types';
 import type {InferType, TypeFromSelection} from 'groqd';
-import type {
-  BreadcrumbList,
-  CollectionPage,
-  Offer,
-  Organization,
-  Article as SeoArticle,
-  Blog as SeoBlog,
-  Product as SeoProduct,
-  WebPage,
-} from 'schema-dts';
+import type {BreadcrumbList, CollectionPage, Offer} from 'schema-dts';
 
-import {vercelStegaCleanAll} from '@sanity/client/stega';
+import {stegaClean} from '@sanity/client/stega';
 import {type SeoConfig} from '@shopify/hydrogen';
 
 import type {SIMPLE_IMAGE_FRAGMENT} from '~/qroq/fragments';
@@ -535,7 +526,7 @@ function generateOGImageData({
     return undefined;
   }
 
-  const socialImage = vercelStegaCleanAll(image);
+  const socialImage = stegaClean(image);
 
   const size = {
     height: 628,

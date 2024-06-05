@@ -1,7 +1,7 @@
 import type {LoaderFunctionArgs, MetaArgs} from '@shopify/remix-oxygen';
 
 import {useLoaderData} from '@remix-run/react';
-import {AnalyticsPageType, getSeoMeta} from '@shopify/hydrogen';
+import {getSeoMeta} from '@shopify/hydrogen';
 import {defer} from '@shopify/remix-oxygen';
 import {DEFAULT_LOCALE} from 'countries';
 
@@ -11,11 +11,12 @@ import {CmsSection} from '~/components/CmsSection';
 import {useSanityData} from '~/hooks/useSanityData';
 import {resolveShopifyPromises} from '~/lib/resolveShopifyPromises';
 import {sanityPreviewPayload} from '~/lib/sanity/sanity.payload.server';
+import {getSeoMetaFromMatches} from '~/lib/seo';
 import {seoPayload} from '~/lib/seo.server';
 import {PAGE_QUERY} from '~/qroq/queries';
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
-  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+  return getSeoMetaFromMatches(matches);
 };
 
 export async function loader({context, params, request}: LoaderFunctionArgs) {
@@ -61,10 +62,6 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
   });
 
   return defer({
-    analytics: {
-      pageType:
-        handle === 'home' ? AnalyticsPageType.home : AnalyticsPageType.page,
-    },
     collectionListPromise,
     featuredCollectionPromise,
     featuredProductPromise,

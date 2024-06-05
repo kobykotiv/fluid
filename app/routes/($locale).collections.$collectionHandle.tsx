@@ -2,8 +2,7 @@ import type {LoaderFunctionArgs, MetaArgs} from '@shopify/remix-oxygen';
 import type {CollectionDetailsQuery} from 'storefrontapi.generated';
 
 import {useLoaderData} from '@remix-run/react';
-import {getSeoMeta} from '@shopify/hydrogen';
-import {AnalyticsPageType} from '@shopify/hydrogen-react';
+import {UNSTABLE_Analytics as Analytics} from '@shopify/hydrogen';
 import {defer} from '@shopify/remix-oxygen';
 import {DEFAULT_LOCALE} from 'countries';
 import invariant from 'tiny-invariant';
@@ -13,11 +12,12 @@ import {COLLECTION_QUERY} from '~/graphql/queries';
 import {useSanityData} from '~/hooks/useSanityData';
 import {resolveShopifyPromises} from '~/lib/resolveShopifyPromises';
 import {sanityPreviewPayload} from '~/lib/sanity/sanity.payload.server';
+import {getSeoMetaFromMatches} from '~/lib/seo';
 import {seoPayload} from '~/lib/seo.server';
 import {COLLECTION_QUERY as CMS_COLLECTION_QUERY} from '~/qroq/queries';
 
 export const meta = ({matches}: MetaArgs<typeof loader>) => {
-  return getSeoMeta(...matches.map((match) => (match.data as any).seo));
+  return getSeoMetaFromMatches(matches);
 };
 
 export async function loader({context, params, request}: LoaderFunctionArgs) {
@@ -68,11 +68,6 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
   const seo = seoPayload.collection({collection, url: request.url});
 
   return defer({
-    analytics: {
-      collectionHandle,
-      pageType: AnalyticsPageType.collection,
-      resourceId: collection.id,
-    },
     cmsCollection,
     collection,
     collectionListPromise,
@@ -89,18 +84,30 @@ export async function loader({context, params, request}: LoaderFunctionArgs) {
 }
 
 export default function Collection() {
-  const {cmsCollection} = useLoaderData<typeof loader>();
+  const {cmsCollection, collection} = useLoaderData<typeof loader>();
   const {data, encodeDataAttribute} = useSanityData({initial: cmsCollection});
   const template =
     data?.collection?.template || data?.defaultCollectionTemplate;
 
-  return template?.sections && template.sections.length > 0
-    ? template.sections.map((section) => (
-        <CmsSection
-          data={section}
-          encodeDataAttribute={encodeDataAttribute}
-          key={section._key}
-        />
-      ))
-    : null;
+  return (
+    <>
+      {template?.sections && template.sections.length > 0
+        ? template.sections.map((section) => (
+            <CmsSection
+              data={section}
+              encodeDataAttribute={encodeDataAttribute}
+              key={section._key}
+            />
+          ))
+        : null}
+      <Analytics.CollectionView
+        data={{
+          collection: {
+            handle: collection.handle,
+            id: collection.id,
+          },
+        }}
+      />
+    </>
+  );
 }
