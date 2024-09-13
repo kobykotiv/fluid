@@ -6,7 +6,7 @@ import type {
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 
 import {useLoaderData} from '@remix-run/react';
-import {UNSTABLE_Analytics as Analytics, CartForm} from '@shopify/hydrogen';
+import {Analytics, CartForm} from '@shopify/hydrogen';
 import {json, redirectDocument} from '@shopify/remix-oxygen';
 import invariant from 'tiny-invariant';
 
@@ -16,10 +16,7 @@ import {isLocalPath} from '~/lib/utils';
 export async function action({context, request}: ActionFunctionArgs) {
   const {cart} = context;
 
-  const [formData] = await Promise.all([
-    request.formData(),
-    // context.customerAccount.getAccessToken(),
-  ]);
+  const [formData] = await Promise.all([request.formData()]);
 
   const {action, inputs} = CartForm.getFormInput(formData);
   invariant(action, 'No cartAction defined');
@@ -50,11 +47,9 @@ export async function action({context, request}: ActionFunctionArgs) {
 
       result = await cart.updateDiscountCodes(discountCodes);
       break;
-    // Todo => Customer Access Token
     case CartForm.ACTIONS.BuyerIdentityUpdate:
       result = await cart.updateBuyerIdentity({
         ...inputs.buyerIdentity,
-        // customerAccessToken,
       });
       break;
     default:

@@ -1,8 +1,8 @@
-import type {LoaderFunctionArgs, MetaArgs} from '@shopify/remix-oxygen';
+import type {LoaderFunctionArgs, MetaFunction} from '@shopify/remix-oxygen';
 import type {CollectionDetailsQuery} from 'storefrontapi.generated';
 
 import {useLoaderData} from '@remix-run/react';
-import {UNSTABLE_Analytics as Analytics} from '@shopify/hydrogen';
+import {Analytics} from '@shopify/hydrogen';
 import {defer} from '@shopify/remix-oxygen';
 import {DEFAULT_LOCALE} from 'countries';
 import invariant from 'tiny-invariant';
@@ -10,16 +10,16 @@ import invariant from 'tiny-invariant';
 import {CmsSection} from '~/components/CmsSection';
 import {COLLECTION_QUERY} from '~/graphql/queries';
 import {useSanityData} from '~/hooks/useSanityData';
+import {mergeMeta} from '~/lib/meta';
 import {resolveShopifyPromises} from '~/lib/resolveShopifyPromises';
 import {sanityPreviewPayload} from '~/lib/sanity/sanity.payload.server';
 import {getSeoMetaFromMatches} from '~/lib/seo';
 import {seoPayload} from '~/lib/seo.server';
 import {COLLECTION_QUERY as CMS_COLLECTION_QUERY} from '~/qroq/queries';
 
-export const meta = ({matches}: MetaArgs<typeof loader>) => {
-  return getSeoMetaFromMatches(matches);
-};
-
+export const meta: MetaFunction<typeof loader> = mergeMeta(({matches}) =>
+  getSeoMetaFromMatches(matches),
+);
 export async function loader({context, params, request}: LoaderFunctionArgs) {
   const {collectionHandle} = params;
   const {locale, sanity, storefront} = context;
@@ -92,10 +92,11 @@ export default function Collection() {
   return (
     <>
       {template?.sections && template.sections.length > 0
-        ? template.sections.map((section) => (
+        ? template.sections.map((section, index) => (
             <CmsSection
               data={section}
               encodeDataAttribute={encodeDataAttribute}
+              index={index}
               key={section._key}
             />
           ))

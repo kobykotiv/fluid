@@ -15,6 +15,5 @@ export function getSeoMetaFromMatches(matches: MetaArgs['matches']) {
       .filter((match) => typeof (match.data as MatchData)?.seo !== 'undefined')
       .map((match) => (match.data as MatchData)?.seo),
   ];
-
-  return getSeoMeta(...seoData);
+  return getSeoMeta(...seoData) || [];
 }
